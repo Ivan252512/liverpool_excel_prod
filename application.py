@@ -15,8 +15,8 @@ from botocore.exceptions import ClientError
 import datetime
 import unidecode
 
-application = Flask(__name__, static_folder="static", template_folder="templates")
-# Configure this environment variable via application.yaml
+app = Flask(__name__, static_folder="static", template_folder="templates")
+# Configure this environment variable via app.yaml
 AWS_BUCKET_NAME = "liverpoolexcel"
 UPLOAD_FOLDER = "/tmp"
 
@@ -85,11 +85,11 @@ def upload_file(file_name, bucket):
     return response
 
 
-@application.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def home():
     return tables("Seleccionar", "Seleccionar", 100)
 
-@application.route("/<document>/<sheet>/<limit>", methods=['GET', 'POST'])
+@app.route("/<document>/<sheet>/<limit>", methods=['GET', 'POST'])
 def tables(document, sheet, limit):
 
     document = str(document).replace("'", "")
@@ -132,12 +132,12 @@ def tables(document, sheet, limit):
                             cols_values=cols_values,
                             limit=limit)
 
-@application.route("/get_pages/<document>", methods=['GET', 'POST'])
+@app.route("/get_pages/<document>", methods=['GET', 'POST'])
 def get_pages(document):
     document = documents_collection.find_one({"name":document})
-    return Response(dumps(document["sheets"]), mimetype='application/json')
+    return Response(dumps(document["sheets"]), mimetype='app/json')
 
-@application.route("/tables_filter/<document>/<sheet>", methods=['GET', 'POST'])
+@app.route("/tables_filter/<document>/<sheet>", methods=['GET', 'POST'])
 def tables_filter(document, sheet):
     document = str(document).replace("'", "")
     document = document.replace('"', "")
@@ -181,7 +181,7 @@ def tables_filter(document, sheet):
     return {"table":table, "cols":cols}
 
 
-@application.route('/load_database', methods=['POST'])
+@app.route('/load_database', methods=['POST'])
 def load_database():
     if request.method == 'POST':
         f = request.files['file']
@@ -194,7 +194,7 @@ def load_database():
         excel.load_to_db()
     return home()
 
-@application.route('/drop_database', methods=['GET'])
+@app.route('/drop_database', methods=['GET'])
 def drop_database():
     s3 = boto3.resource('s3')
     for i in documents_collection.find({}):
@@ -203,7 +203,7 @@ def drop_database():
     excels = {'Seleccionar' : pd.read_excel("Seleccionar.xlsx", None)}
     return redirect("/")
 
-@application.route('/delete/<name>', methods=['GET'])
+@app.route('/delete/<name>', methods=['GET'])
 def delete(name):
     name = str(name)
     s3 = boto3.resource('s3')
@@ -215,5 +215,5 @@ def delete(name):
 
 
 if __name__ == "__main__":
-    application.debug = True
-    application.run()
+    app.debug = True
+    app.run()
