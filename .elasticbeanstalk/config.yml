@@ -1,0 +1,20 @@
+branch-defaults:
+  default:
+    environment: flask-env
+    group_suffix: null
+  master:
+    environment: flask-env
+global:
+  application_name: liverpoolexcel_final
+  branch: null
+  default_ec2_keyname: aws-eb
+  default_platform: Python 3.7 running on 64bit Amazon Linux 2
+  default_region: us-west-2
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: liverpool
+  repository: null
+  sc: null
+  workspace_type: Application
