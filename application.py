@@ -17,12 +17,13 @@ import unidecode
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 # Configure this environment variable via app.yaml
-AWS_BUCKET_NAME = "liverpoolexcel"
+AWS_BUCKET_NAME = "liverpoolprod"
 UPLOAD_FOLDER = "/tmp"
 
 ALLOWED_EXTENSIONS = {'xlsx', 'xls'}
 
-CONNECTION_STRING = "mongodb+srv://ivan:sarampion25@cluster0-s8nin.mongodb.net/test?retryWrites=true&w=majority"
+
+CONNECTION_STRING = "mongodb+srv://liverpool:Autosave2@cluster0-ndmqd.mongodb.net/test?retryWrites=true&w=majority"
 client = pymongo.MongoClient(CONNECTION_STRING, maxPoolSize=10000)
 db = client.get_database('excel')
 documents_collection = pymongo.collection.Collection(db, 'documents')
