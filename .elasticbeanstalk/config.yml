@@ -18,3 +18,8 @@ global:
   repository: null
   sc: null
   workspace_type: Application
+micronaut:
+  server:
+      max-request-size: '100MB'
+      multipart:
+          max-file-size: '100MB'
