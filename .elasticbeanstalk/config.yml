@@ -19,9 +19,12 @@ global:
   sc: null
   workspace_type: Application
 files:
-  "/etc/nginx/conf.d/proxy.conf" :
-      mode: "000755"
-      owner: root
-      group: root
-      content: |
-          client_max_body_size 100M;
+  "/etc/nginx/conf.d/proxy.conf":
+    mode: "000755"
+    owner: root
+    group: root
+    content: |
+      client_max_body_size 100M;
+container_commands:
+  nginx_reload:
+    command: "sudo service nginx reload"
