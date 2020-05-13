@@ -18,8 +18,10 @@ global:
   repository: null
   sc: null
   workspace_type: Application
-micronaut:
-  server:
-      max-request-size: '100MB'
-      multipart:
-          max-file-size: '100MB'
+files:
+  "/etc/nginx/conf.d/proxy.conf" :
+      mode: "000755"
+      owner: root
+      group: root
+      content: |
+          client_max_body_size 100M;
