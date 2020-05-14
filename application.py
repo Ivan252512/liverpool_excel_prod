@@ -17,7 +17,7 @@ import unidecode
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 # Configure this environment variable via app.yaml
-AWS_BUCKET_NAME = "liverpoolexcel"
+AWS_BUCKET_NAME = "liverpoolprod"
 UPLOAD_FOLDER = "/tmp"
 
 ALLOWED_EXTENSIONS = {'xlsx', 'xls'}
@@ -30,7 +30,7 @@ documents_collection = pymongo.collection.Collection(db, 'documents')
 excels = {'Seleccionar' : pd.read_excel("Seleccionar.xlsx", None)}
 
 for i in documents_collection.find({}):
-    excels[i['name']] = pd.read_excel("https://liverpoolexcel.s3-us-west-1.amazonaws.com//tmp/"+i['name'], None, dtype=str)
+    excels[i['name']] = pd.read_excel("https://liverpoolprod.s3-us-west-2.amazonaws.com//tmp/"+i['name'], None, dtype=str)
 
 class Excel:
     def __init__(self, name):
@@ -189,7 +189,7 @@ def load_database():
         f.save(os.path.join(UPLOAD_FOLDER, filename))
         upload_file(f"/tmp/{filename}", AWS_BUCKET_NAME)
         os.remove(f"/tmp/{filename}")
-        excels[filename] = pd.read_excel("https://liverpoolexcel.s3-us-west-1.amazonaws.com//tmp/"+filename, None, dtype=str)
+        excels[filename] = pd.read_excel("https://liverpoolprod.s3-us-west-2.amazonaws.com//tmp/"+filename, None, dtype=str)
         excel = Excel(filename)
         excel.load_to_db()
     return home()
